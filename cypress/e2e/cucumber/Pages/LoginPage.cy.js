@@ -1,23 +1,23 @@
 class LoginPage {
     enterURL() {
      cy.visit(
-       "https://assure-demo-tessi.owliance.net/#/auth/login"
+       "https://rct02-developpement.owliance.net/owlinkbytessi/#!/login?UnauthorizedError=Unauthorized"
      );
    }
     enterUserNamePassword(username, password) {
-     cy.get('[id="email"]').type(username);
-     cy.get('[id="password"]').type(password);
+     cy.get('[id="form-username"]').type(username);
+     cy.get('[id="form-password"]').type(password);
    }
     clickSubmitButton() {
-     cy.get('[type="button"]').first().click();
+     cy.contains('Connexion').click();
    }
     verifyPageTitle() {
-     return cy.title().should("eq", "Assuré");
+     return cy.title().should("eq", "Owlink by Tessi");
    }
    verifyLoggedUserAndMenuSidebar() {
-    cy.get('.profile-name').should('exist','be.visible').contains('Assure DEMO');
-    cy.get('.layout-sidebar').should('exist');
-    cy.get('span').contains('Informations').should('exist');
+    cy.get('#user-id').should('exist','be.visible').contains('amannai');
+    cy.get('#left-panel').should('exist');
+    cy.get('#logout').should('exist','be.visible');
    }
  }
  const login = new LoginPage();
