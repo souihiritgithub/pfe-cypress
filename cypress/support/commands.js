@@ -23,3 +23,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add("loginRct01", () => {
+      cy.visit("https://rct01-developpement.owliance.net/owlinkbytessi/#!/login?UnauthorizedError=Unauthorized");
+      cy.get('[id="form-username"]').should('be.visible').type('AUTO');
+      cy.get('[id="form-password"]').should('be.visible').type('AUTO654321');
+      cy.contains('Connexion').click();
+  })
+
+  Cypress.Commands.add("loginRct02", () => {
+    cy.visit("https://rct02-developpement.owliance.net/owlinkbytessi/#!/login?UnauthorizedError=Unauthorized");
+    cy.get('[id="form-username"]').should('be.visible').type('AUTO');
+    cy.get('[id="form-password"]').should('be.visible').type('AUTO654321');
+    cy.contains('Connexion').click();
+})

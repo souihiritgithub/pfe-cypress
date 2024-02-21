@@ -1,21 +1,16 @@
 /// <reference types="cypress" />
-import {Given, When, Then, And} from "cypress-cucumber-preprocessor/steps"
+import { Given, When, Then, And } from "cypress-cucumber-preprocessor/steps";
 import login from "../Pages/LoginPage.cy";
-Given("I navigate to the application", () => {
-login.enterURL();
+import loginRct02 from '../../../support/commands';
+
+beforeEach(() => {
+    cy.loginRct02();
 });
-When("I entered valid credentials", (datatable) => {
-datatable.hashes().forEach((element) => {
-login.enterUserNamePassword(element.identifiant, element.mdp);
-login.clickSubmitButton()
-});
-});
-And("User click on sign in button", () => {
-login.clickSubmitButton();
-});
+
 Then("Validate the title after login", () => {
-login.verifyPageTitle();
+    login.verifyPageTitle();
 });
+
 And("Validate existing elements in the redirected page", () => {
-login.verifyLoggedUserAndMenuSidebar();
+    login.verifyLoggedUserAndMenuSidebar();
 });
