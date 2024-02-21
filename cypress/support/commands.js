@@ -23,16 +23,39 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-Cypress.Commands.add("loginRct01", () => {
-      cy.visit("https://rct01-developpement.owliance.net/owlinkbytessi/#!/login?UnauthorizedError=Unauthorized");
-      cy.get('[id="form-username"]').should('be.visible').type('AUTO');
-      cy.get('[id="form-password"]').should('be.visible').type('AUTO654321');
-      cy.contains('Connexion').click();
-  })
+Cypress.Commands.add('loginRct01', () => {
+	cy.visit(
+		'https://rct01-developpement.owliance.net/owlinkbytessi/#!/login?UnauthorizedError=Unauthorized',
+	)
+	cy.get('[id="form-username"]').should('be.visible').type('AUTO')
+	cy.get('[id="form-password"]').should('be.visible').type('AUTO654321')
+	cy.contains('Connexion').click()
+})
 
-  Cypress.Commands.add("loginRct02", () => {
-    cy.visit("https://rct02-developpement.owliance.net/owlinkbytessi/#!/login?UnauthorizedError=Unauthorized");
-    cy.get('[id="form-username"]').should('be.visible').type('AUTO');
-    cy.get('[id="form-password"]').should('be.visible').type('AUTO654321');
-    cy.contains('Connexion').click();
+Cypress.Commands.add('loginRct02', () => {
+	cy.visit(
+		'https://rct02-developpement.owliance.net/owlinkbytessi/#!/login?UnauthorizedError=Unauthorized',
+	)
+	cy.get('[id="form-username"]').should('be.visible').type('AUTO')
+	cy.get('[id="form-password"]').should('be.visible').type('AUTO654321')
+	cy.contains('Connexion').click()
+})
+Cypress.Commands.add('loginRct03', () => {
+	cy.visit(
+		'https://rct03-developpement.owliance.net/owlinkbytessi/#!/login?UnauthorizedError=Unauthorized',
+	)
+	cy.get('[id="form-username"]').should('be.visible').type('AUTO')
+	cy.get('[id="form-password"]').should('be.visible').type('AUTO654321')
+	cy.contains('Connexion').click()
+})
+
+Cypress.Commands.add('logout', () => {
+	cy.get('#logout').should('exist', 'be.visible').click()
+	cy.get('#Msg1').should('exist', 'be.visible')
+	cy.get('.pText')
+		.should('exist', 'be.visible')
+		.should('have.text', 'Souhaitez-vous fermer votre page de navigation ?')
+
+	cy.get('#bot2-Msg1').should('exist', 'be.visible').click()
+	cy.url().should('include', '/#!/login')
 })
