@@ -23,7 +23,7 @@ Clone this repository to your local machine:
 
 Install the project dependencies:
 
-npm install
+npm ci
 
 
 ## Running Tests
