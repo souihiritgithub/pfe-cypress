@@ -48,7 +48,7 @@ This mode facilitates the creation of a 'results' folder in your workspace. It g
 
 ## Name
 
-PORTAIL CYPRESS
+RECETTE CYPRESS
 
 ## Description
 The project provides a comprehensive set of end-to-end tests that can be executed both interactively and in headless mode for seamless integration into your CI/CD pipelines.
