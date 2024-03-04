@@ -4,9 +4,9 @@ import login from '../Pages/LoginPage.cy'
 import loginRct02 from '../../../support/commands'
 import logout from '../../../support/commands'
 
-beforeEach(() => {
+/*before(() => {
 	cy.loginRct02()
-})
+})*/
 
 Then('Validate the title after login', () => {
 	login.verifyPageTitle()
@@ -15,7 +15,7 @@ Then('Validate the title after login', () => {
 And('Validate existing elements in the redirected page', () => {
 	login.verifyLoggedUserAndMenuSidebar()
 })
-afterEach(() => {
+/*afterEach(() => {
 	cy.logout()
     cy.clearAllLocalStorage()
-})
+})*/
