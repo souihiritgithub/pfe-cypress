@@ -1,3 +1,4 @@
+import { should } from 'chai'
 import 'cypress-xpath'
 class AdhesionPage {
 	currentDate = new Date()
@@ -47,8 +48,8 @@ class AdhesionPage {
 	}
 	EnterInputOblig() {
 		cy.get('[name=dateN]').type('01/01/1970')
-		cy.get('[name=nom]').type('AUTOMATIONAUT')
-		cy.get('[name=prenom]').type('AUTOMATIONAUT')
+		cy.get('[name=nom]').type('TESTFAMCY')
+		cy.get('[name=prenom]').type('TESTFAMCY')
 		cy.get('#range').should('have.value', '1')
 		cy.get('#cp').type('31000')
 		cy.get('#ville').type('TOULOUSE')
@@ -163,7 +164,7 @@ class AdhesionPage {
 	}
 	ModifInputs() {
 		cy.get('#nom').clear()
-		cy.get('#nom').type('AUTOMATIONAUTModif')
+		cy.get('#nom').type('TESTFAMCYModif')
 	}
 
 	ClickUpdate() {
@@ -172,7 +173,7 @@ class AdhesionPage {
 	VerifUpdateDetailSuccess() {
 		cy.get('tbody').first().find('tr').first().click()
 
-		cy.get('#nom').should('have.value', 'AUTOMATIONAUTMODIF')
+		cy.get('#nom').should('have.value', 'TESTFAMCYMODIF')
 	}
 	VerifUpdateSuccessEnFonctionModif() {
 		cy.get('tbody')
@@ -181,7 +182,7 @@ class AdhesionPage {
 			.first()
 			.find('td')
 			.eq(2)
-			.should('have.text', 'AUTOMATIONAUTMODIF')
+			.should('have.text', 'TESTFAMCYMODIF')
 	}
 	VerifDateProduit() {
 		cy.get('[name=dateAdhesion]').should('have.value', this.formattedDate)
@@ -323,23 +324,178 @@ class AdhesionPage {
 		cy.get('#codeGichet').type('00010')
 		cy.get('#numCompte').type('51984498515')
 		cy.get('#cleRIB').type('35')
-		cy.get('#titulaire').type('AUTOMATIONAUT')
-		cy.get('[role="content"] > :nth-child(1) > .smart-form > footer > .btn-primary').click()
-		
+		cy.get('#titulaire').type('TESTFAMCY')
+		cy.get(
+			'[role="content"] > :nth-child(1) > .smart-form > footer > .btn-primary',
+		).click()
 	}
 	VerifRefBancaireExistante() {
 		cy.get('#modalYesBtn').click()
 		cy.contains('Ajout effectué avec succès')
-		cy.get('.input-group').eq(30).contains('[ AUTOMATIONAUT ]- - 17499')
-		cy.xpath('//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[1]/label[2]/input').should('have.value', 'FR7617499000105198449851535')
-		cy.xpath('//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[2]/label[2]/input').should('have.value', 'BCADNCNNXXX')
-		cy.xpath('//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[3]/label[2]/input').should('have.value','AUTOMATIONAUT')
-		cy.xpath('//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[4]/label[2]/input').should('have.value','BCI NOUMEA VICTOIre')
-		cy.wait(2000);	
-		cy.get('.tab-pane.active > #reglementPeriodicite > #createformReglementPeriodicite > .panel > :nth-child(5) > [data-ng-click="addReglement();formReglementPeriodicite.$setPristine()"]').click()
+		cy.get('.input-group').eq(30).contains('[ TESTFAMCY ]- - 17499')
+		cy.xpath(
+			'//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[1]/label[2]/input',
+		).should('have.value', 'FR7617499000105198449851535')
+		cy.xpath(
+			'//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[2]/label[2]/input',
+		).should('have.value', 'BCADNCNNXXX')
+		cy.xpath(
+			'//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[3]/label[2]/input',
+		).should('have.value', 'TESTFAMCY')
+		cy.xpath(
+			'//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[4]/label[2]/input',
+		).should('have.value', 'BCI NOUMEA VICTOIre')
+		cy.wait(2000)
+		cy.get(
+			'.tab-pane.active > #reglementPeriodicite > #createformReglementPeriodicite > .panel > :nth-child(5) > [data-ng-click="addReglement();formReglementPeriodicite.$setPristine()"]',
+		).click()
 		cy.get('#modalYesBtn').click()
 	}
-	
+	BtnSupprimerAndVerif() {
+		cy.intercept('**/api/cotisationStatus/calculCotisation').as(
+			'calculCotisation',
+		)
+		cy.wait('@calculCotisation')
+		cy.get(
+			'.tab-pane.active > #reglement-cotisation-list > .panel-body > .box-body > .row > [dw-loading="reglementList"] > .col-sm-3 > .demo-btns > [aria-label="Supprimer"] > .btn',
+		).click()
+		cy.wait(1000)
+		cy.get('#modalYesBtn').click()
+		cy.wait(1000)
+		cy.get('#modalYesBtn').click()
+		cy.contains('Attention ! Il manque des codes de règlement')
+		cy.get('.input-group')
+			.eq(30)
+			.should('not.have.value', '[ TESTFAMCY ]- - 17499')
+	}
+	RefaireRefBancaire() {
+		cy.get('.input-group').eq(27).click()
+		cy.get(
+			'#ui-select-choices-row-46-1 > .ui-select-choices-row-inner',
+		).click()
+		cy.get('.input-group').eq(29).click()
+		cy.get(
+			'#ui-select-choices-row-48-1 > .ui-select-choices-row-inner',
+		).click()
+		cy.xpath(
+			'//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[1]/section[6]/reference-bancaire-owlink/div/section/a',
+		).click({ multiple: true, force: true })
+		cy.get('#radio_45 > .md-container > .md-off').click()
+		cy.wait(1000)
+		cy.get('#codePays').type('FR')
+		cy.get('#codeBank').type('17499')
+		cy.get('#codeGichet').type('00010')
+		cy.get('#numCompte').type('51984498515')
+		cy.get('#cleRIB').type('35')
+		cy.get('#titulaire').type('TESTFAMCY')
 
+		cy.wait(1000)
+
+		cy.get(
+			':nth-child(2) > :nth-child(1) > .smart-form > footer > .btn-primary',
+		).click()
+		cy.get('#modalYesBtn').click()
+		//ajout mandat et verif des champs
+		cy.get(
+			'.tab-pane.active > #reglementPeriodicite > #createformReglementPeriodicite > .panel > :nth-child(4) > :nth-child(2) > div.col-4 > .well > fieldset > .row > .mandat-owlink-padding > .mandat-owlink > .btn > .btn-label',
+		).click()
+		cy.get('.popover').should('exist')
+		cy.get(
+			'.col-md-12 > .input > .input-group > .ui-select-container > .ui-select-match > .btn-default > .ui-select-match-text',
+		).contains('TESTFAMCY FR7617499000105198449851535')
+		cy.get(
+			':nth-child(3) > .well > fieldset > :nth-child(1) > :nth-child(1) > .input > .form-control',
+		).should('have.value', 'FR7617499000105198449851535')
+		cy.get('#bic').should('have.value', 'BCADNCNNXXX')
+		cy.get(
+			':nth-child(2) > :nth-child(1) > :nth-child(3) > .well > fieldset > :nth-child(2) > :nth-child(1) > .input > .form-control',
+		).should('have.value', '17499')
+		cy.get('#codeGichet').should('have.value', '00010')
+		cy.get('#numCompte').should('have.value', '51984498515')
+		cy.get(
+			':nth-child(3) > .well > fieldset > :nth-child(3) > :nth-child(1) > .input > .form-control',
+		).should('have.value', 'TESTFAMCY')
+		cy.get(
+			':nth-child(3) > .well > fieldset > :nth-child(3) > :nth-child(2) > .input > .form-control',
+		).should('have.value', 'BCI NOUMEA VICTOIre')
+		//ajout produit preleve
+		cy.get(
+			'.input > .input-group > .ui-select-container > :nth-child(1) > .ui-select-search',
+		)
+			.click()
+			.type('ENTSAN{enter}')
+		cy.get('[name=singneLe]').type(this.formattedDate)
+
+		cy.wait(1000)
+		cy.get('#mandatPrelevementform > footer > .btn-primary').click()
+		cy.contains('Ajout effectué avec succès')
+		cy.get('#rum').should('not.have.value', '')
+		cy.get('[name=dateSign]').should('have.value', this.formattedDate)
+
+		//valider l'ajoout du ref bancaire
+		cy.get(
+			'.tab-pane.active > #reglementPeriodicite > #createformReglementPeriodicite > .panel > :nth-child(5) > [data-ng-click="addReglement();formReglementPeriodicite.$setPristine()"]',
+		).click()
+	}
+
+	SupprimerFamille() {
+		cy.xpath('//*[@id="left-panel"]/ng-include/nav/ul/li[2]/a').click()
+		cy.xpath(
+			'//*[@id="left-panel"]/ng-include/nav/ul/li[2]/ul/li[3]/a',
+		).click()
+		cy.get('[name=a_ynom]').type('TESTFAMCY')
+		cy.xpath(
+			'//*[@id="searchFamily"]/footer[1]/div/div[2]/input[1]',
+		).click()
+		cy.get('tbody').eq(2).find('tr').eq(1).click()
+		cy.get('#bouton-gestion-famille-modifier').click()
+
+		cy.xpath('//*[@id="content"]/div/div/div[1]/ul/li[3]').click()
+		cy.wait(1000)
+		//sup option
+		cy.xpath('//*[@id="ProduitGestion"]/div/ul/li[2]').click()
+		cy.wait(1000)
+		cy.get('tbody').eq(1).find('tr').first().click()
+		cy.get(
+			'.col-sm-12 > .demo-btns > [aria-label="Supprimer"] > .btn',
+		).click()
+		cy.wait(1000)
+
+		cy.get('#modalYesBtn').click()
+		cy.wait(1000)
+
+		cy.get('tbody').eq(1).find('tr').first().click()
+		cy.get(
+			'.col-sm-12 > .demo-btns > [aria-label="Supprimer"] > .btn',
+		).click()
+		cy.get('#modalYesBtn').click()
+		//supp reglement
+		cy.xpath('//*[@id="ProduitGestion"]/div/ul/li[3]').click()
+		cy.get(
+			'.col-sm-3 > .demo-btns > [aria-label="Supprimer"] > .btn',
+		).click()
+		cy.wait(1000)
+
+		cy.get('#modalYesBtn').click()
+		cy.wait(1000)
+
+		cy.get('#modalYesBtn').click()
+
+		//supp produit
+		cy.get(
+			':nth-child(3) > .demo-btns > [aria-label="Supprimer"] > .btn',
+		).click()
+		cy.wait(1000)
+
+		cy.get('#modalYesBtn').click()
+
+		//sup ayant droit
+		cy.xpath('//*[@id="content"]/div/div/div[1]/ul/li[2]').click()
+		cy.get('#modalYesBtn').click()
+		cy.wait(1000)
+		cy.get('tbody').first().find('tr').first().click()
+		cy.get('#delete-ayant-droit').click()
+		cy.get('#modalYesBtn').click()
+	}
 }
 export default new AdhesionPage()

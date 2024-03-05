@@ -44,5 +44,10 @@ Feature: Gestion et contexte des adhésion
     Then Vérification que les champs sont alimentés automatiquement 
     When L'utilisateur Ajout et valide une référence bancaire
     Then Si la référence bancaire existe déjà , Affichage du message Référence bancaire déjà existante
+    When L'utilisateur clique sur la ligne ajoutée, clique sur supprimer, verif
+    Then refaire ref bancaire,ajout mandat, verifier ses champs,valide produit et validation finale
+    When supression famille 
+ 
+
 
 

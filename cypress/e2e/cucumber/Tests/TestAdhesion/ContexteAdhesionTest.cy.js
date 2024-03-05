@@ -170,3 +170,13 @@ AdhesionPage.AjoutRefBancaire()
 Then(`Si la référence bancaire existe déjà , Affichage du message Référence bancaire déjà existante`, () => {
 	AdhesionPage.VerifRefBancaireExistante()
 })
+When(`L'utilisateur clique sur la ligne ajoutée, clique sur supprimer, verif`, () => {
+	AdhesionPage.BtnSupprimerAndVerif()
+})
+Then(`refaire ref bancaire,ajout mandat, verifier ses champs,valide produit et validation finale`, () => {
+AdhesionPage.RefaireRefBancaire()
+})
+When(`supression famille`, () => {
+	AdhesionPage.SupprimerFamille()
+}
+	)
