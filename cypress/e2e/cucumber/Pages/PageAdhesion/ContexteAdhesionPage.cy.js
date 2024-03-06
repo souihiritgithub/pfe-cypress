@@ -1,9 +1,9 @@
 import { should } from 'chai'
 import 'cypress-xpath'
 class AdhesionPage {
+	formattedDate = '01/01/2023'
 	currentDate = new Date()
-	formattedDate = `${this.currentDate.getDate().toString().padStart(2, '0')}/${(this.currentDate.getMonth() + 1).toString().padStart(2, '0')}/${this.currentDate.getFullYear()}`
-
+	formattedDateSaisie = `${this.currentDate.getDate().toString().padStart(2, '0')}/${(this.currentDate.getMonth() + 1).toString().padStart(2, '0')}/${this.currentDate.getFullYear()}`
 	goToAdhesionMenu() {
 		cy.xpath('//*[@id="left-panel"]/ng-include/nav/ul/li[2]/a').click()
 		cy.xpath(
@@ -48,8 +48,8 @@ class AdhesionPage {
 	}
 	EnterInputOblig() {
 		cy.get('[name=dateN]').type('01/01/1970')
-		cy.get('[name=nom]').type('TESTFAMCY')
-		cy.get('[name=prenom]').type('TESTFAMCY')
+		cy.get('[name=nom]').type('CYPRESFAMSECON')
+		cy.get('[name=prenom]').type('CYPRESFAMSECON')
 		cy.get('#range').should('have.value', '1')
 		cy.get('#cp').type('31000')
 		cy.get('#ville').type('TOULOUSE')
@@ -164,7 +164,7 @@ class AdhesionPage {
 	}
 	ModifInputs() {
 		cy.get('#nom').clear()
-		cy.get('#nom').type('TESTFAMCYModif')
+		cy.get('#nom').type('CYPRESFAMSECONModif')
 	}
 
 	ClickUpdate() {
@@ -173,7 +173,7 @@ class AdhesionPage {
 	VerifUpdateDetailSuccess() {
 		cy.get('tbody').first().find('tr').first().click()
 
-		cy.get('#nom').should('have.value', 'TESTFAMCYMODIF')
+		cy.get('#nom').should('have.value', 'CYPRESFAMSECONMODIF')
 	}
 	VerifUpdateSuccessEnFonctionModif() {
 		cy.get('tbody')
@@ -182,7 +182,7 @@ class AdhesionPage {
 			.first()
 			.find('td')
 			.eq(2)
-			.should('have.text', 'TESTFAMCYMODIF')
+			.should('have.text', 'CYPRESFAMSECONMODIF')
 	}
 	VerifDateProduit() {
 		cy.get('[name=dateAdhesion]').should('have.value', this.formattedDate)
@@ -193,7 +193,7 @@ class AdhesionPage {
 
 		cy.get('[name=dateSaisieAdhesion]').should(
 			'have.value',
-			this.formattedDate,
+			this.formattedDateSaisie,
 		)
 		cy.get('[name=dateEcheance]').should('have.value', this.formattedDate)
 	}
@@ -203,7 +203,7 @@ class AdhesionPage {
 
 		cy.get('small.ng-binding').click()
 
-		cy.get('.input-group').eq(14).click().type('ENTSAN A00{enter}')
+		cy.get('.input-group').eq(14).click().type('ENTSAN A45{enter}')
 		cy.get('.input-group').eq(19).click().type('Reçu et accepté{enter}')
 
 		cy.get('.input-group').eq(15).click()
@@ -247,6 +247,7 @@ class AdhesionPage {
 		cy.get('#optionsProduittable_info').contains(
 			"Affichage de l'élement 0 à 0 sur 0 éléments",
 		)
+		cy.wait(1000)
 		cy.get('tbody').eq(3).find('tr').should('have.length.gt', 2)
 		cy.get('[name=dateDebut]').should('have.value', this.formattedDate)
 		cy.get('[name=dateEffetCotisation]').should(
@@ -324,7 +325,7 @@ class AdhesionPage {
 		cy.get('#codeGichet').type('00010')
 		cy.get('#numCompte').type('51984498515')
 		cy.get('#cleRIB').type('35')
-		cy.get('#titulaire').type('TESTFAMCY')
+		cy.get('#titulaire').type('CYPRESFAMSECON')
 		cy.get(
 			'[role="content"] > :nth-child(1) > .smart-form > footer > .btn-primary',
 		).click()
@@ -332,7 +333,7 @@ class AdhesionPage {
 	VerifRefBancaireExistante() {
 		cy.get('#modalYesBtn').click()
 		cy.contains('Ajout effectué avec succès')
-		cy.get('.input-group').eq(30).contains('[ TESTFAMCY ]- - 17499')
+		cy.get('.input-group').eq(30).contains('[ CYPRESFAMSECON ]- - 17499')
 		cy.xpath(
 			'//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[1]/label[2]/input',
 		).should('have.value', 'FR7617499000105198449851535')
@@ -341,7 +342,7 @@ class AdhesionPage {
 		).should('have.value', 'BCADNCNNXXX')
 		cy.xpath(
 			'//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[3]/label[2]/input',
-		).should('have.value', 'TESTFAMCY')
+		).should('have.value', 'CYPRESFAMSECON')
 		cy.xpath(
 			'//*[@id="createformReglementPeriodicite"]/div/fieldset/div[1]/div/div/fieldset/div[2]/section[4]/label[2]/input',
 		).should('have.value', 'BCI NOUMEA VICTOIre')
@@ -366,7 +367,7 @@ class AdhesionPage {
 		cy.contains('Attention ! Il manque des codes de règlement')
 		cy.get('.input-group')
 			.eq(30)
-			.should('not.have.value', '[ TESTFAMCY ]- - 17499')
+			.should('not.have.value', '[ CYPRESFAMSECON ]- - 17499')
 	}
 	RefaireRefBancaire() {
 		cy.get('.input-group').eq(27).click()
@@ -387,7 +388,7 @@ class AdhesionPage {
 		cy.get('#codeGichet').type('00010')
 		cy.get('#numCompte').type('51984498515')
 		cy.get('#cleRIB').type('35')
-		cy.get('#titulaire').type('TESTFAMCY')
+		cy.get('#titulaire').type('CYPRESFAMSECON')
 
 		cy.wait(1000)
 
@@ -402,7 +403,7 @@ class AdhesionPage {
 		cy.get('.popover').should('exist')
 		cy.get(
 			'.col-md-12 > .input > .input-group > .ui-select-container > .ui-select-match > .btn-default > .ui-select-match-text',
-		).contains('TESTFAMCY FR7617499000105198449851535')
+		).contains('CYPRESFAMSECON FR7617499000105198449851535')
 		cy.get(
 			':nth-child(3) > .well > fieldset > :nth-child(1) > :nth-child(1) > .input > .form-control',
 		).should('have.value', 'FR7617499000105198449851535')
@@ -414,7 +415,7 @@ class AdhesionPage {
 		cy.get('#numCompte').should('have.value', '51984498515')
 		cy.get(
 			':nth-child(3) > .well > fieldset > :nth-child(3) > :nth-child(1) > .input > .form-control',
-		).should('have.value', 'TESTFAMCY')
+		).should('have.value', 'CYPRESFAMSECON')
 		cy.get(
 			':nth-child(3) > .well > fieldset > :nth-child(3) > :nth-child(2) > .input > .form-control',
 		).should('have.value', 'BCI NOUMEA VICTOIre')
@@ -436,14 +437,18 @@ class AdhesionPage {
 		cy.get(
 			'.tab-pane.active > #reglementPeriodicite > #createformReglementPeriodicite > .panel > :nth-child(5) > [data-ng-click="addReglement();formReglementPeriodicite.$setPristine()"]',
 		).click()
+		cy.get('#suivant').should('exist').click({ force: true })
+cy.xpath('//*[@id="compte-cotisant2"]/header/h2').contains('Liste des cotisations')
+cy.get('.pager > :nth-child(5) > .btn').click()
+cy.get('#modalYesBtn').click()
 	}
 
 	SupprimerFamille() {
-		cy.xpath('//*[@id="left-panel"]/ng-include/nav/ul/li[2]/a').click()
+		cy.xpath('//*[@id="left-panel"]/ng-include/nav/ul/li[2]').click()
 		cy.xpath(
-			'//*[@id="left-panel"]/ng-include/nav/ul/li[2]/ul/li[3]/a',
+			'//*[@id="left-panel"]/ng-include/nav/ul/li[2]/ul/li[3]',
 		).click()
-		cy.get('[name=a_ynom]').type('TESTFAMCY')
+		cy.get('[name=a_ynom]').type('CYPRESFAMSECON')
 		cy.xpath(
 			'//*[@id="searchFamily"]/footer[1]/div/div[2]/input[1]',
 		).click()
