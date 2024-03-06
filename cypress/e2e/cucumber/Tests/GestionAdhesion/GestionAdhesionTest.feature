@@ -42,7 +42,17 @@ Feature: Automatisation des tests pour le cas d'adhésion (Cas2) dans un projet 
 
       When Je clique sur 'Suivant'
       Then Dans le Compte cotisant vérifier l'affichge
-      When je supprime la famille
+      And je supprime la famille
+
+  
+
+
+
+
+
+
+
+
 
 
       

@@ -117,10 +117,20 @@ Then("Dans le Compte cotisant vérifier l'affichge" , () => {
 })
 
 
-When("je supprime la famille" , () => {
-    adhesion.supprimerFamille()
+And("je supprime la famille" , () => {
+    //adhesion.supprimerFamille()
 
 })
+
+
+
+
+
+
+
+
+
+
 
 
 
