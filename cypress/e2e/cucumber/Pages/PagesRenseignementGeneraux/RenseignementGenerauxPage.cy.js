@@ -7,13 +7,15 @@ class RenseignementGeneraux {
 		return prefix + remainingDigits
 	}
 	nouveauNumero = this.generateRandomPhoneNumber()
+	currentDate = new Date()
+	formattedDate = `${this.currentDate.getDate().toString().padStart(2, '0')}/${(this.currentDate.getMonth() + 1).toString().padStart(2, '0')}/${this.currentDate.getFullYear()}`
 
 	accesMenuGestionFamille() {
 		cy.xpath('//*[@id="left-panel"]/ng-include/nav/ul/li[2]/a').click()
 		cy.xpath(
 			'//*[@id="left-panel"]/ng-include/nav/ul/li[2]/ul/li[3]/a',
 		).click()
-		cy.get('[name=a_ynom]').type('TESTACY')
+		cy.get('[name=a_ynom]').type('ONETESTCY')
 		cy.xpath(
 			'//*[@id="searchFamily"]/footer[1]/div/div[2]/input[1]',
 		).click()
@@ -206,31 +208,153 @@ class RenseignementGeneraux {
 	modifierAnneeNaissance() {
 		cy.get('[name=dateNaissance]').clear().type('01/01/1995')
 		cy.get('#mettreAJour').click()
-		cy.contains('Modification effectuée avec succès') 
+		cy.contains('Modification effectuée avec succès')
 	}
 
 	modifierNomFamille() {
-		 cy.get('#nom').clear().type('MODIFOCATIONNAME')
+		cy.get('#nom').clear().type('MODIFOCATIONNAME')
 		cy.get('#mettreAJour').click()
 		cy.contains('Modification effectuée avec succès')
-	} 
+	}
 	testChamps() {
 		//modifprenom
-		 cy.get('#prenom').clear().type('MODIFOCATIONNAME')
+		cy.get('#prenom').clear().type('MODIFOCATIONNAME')
 		cy.get('#mettreAJour').click()
 		cy.contains('Modification effectuée avec succès')
 		cy.get('tbody').first().find('tr').first().click()
 
 		cy.get('[aria-label="Modifier"]').find('a').click()
-		cy.get('#prenom').should('have.value', 'MODIFOCATIONNAME') 
-//modif civilité
-cy.get('#civilite').select('Madame')
-cy.get('#mettreAJour').click()
+		cy.get('#prenom').should('have.value', 'MODIFOCATIONNAME')
+		//modif civilité
+		cy.get('#civilite').select('Madame')
+		cy.get('#mettreAJour').click()
 		cy.contains('Modification effectuée avec succès')
 		cy.get('tbody').first().find('tr').first().click()
 
 		cy.get('[aria-label="Modifier"]').find('a').click()
 		cy.get('#civilite').should('have.value', 'string:MME')
+	}
+	accesOngletAyantsDroitAjout() {
+		cy.xpath('//*[@id="content"]/div/div/div[1]/ul/li[2]').click()
+		cy.wait(1000)
+		cy.xpath(
+			'//*[@id="list-ayant-droits-widgets"]/div/div/div[1]/div[1]/div/div/ul/li[21]',
+		).click()
+		cy.get('#dateAdhesion').type('04/08/2024')
+		cy.get('#nom').type('NEWNAME')
+		cy.get('#prenom').type('NEWPRENOM')
+		cy.get('#qualite > .ui-select-match > .btn-default').click()
+		cy.get(
+			'#ui-select-choices-row-17-2 > .ui-select-choices-row-inner',
+		).click()
+		cy.get('[name=civilite]').select('Madame')
+		cy.get('[name=dateNaissance]').type('01/01/2020')
+
+		cy.get('#liaisonNoemie').select('ACTIF (Télétrans)')
+		cy.get('#numeroSS').type('220010101010101')
+		cy.get('#cless').type('60')
+		cy.get(
+			':nth-child(4) > :nth-child(1) > .input-group > .ui-select-container > .ui-select-match > .btn-default',
+		).click()
+		cy.get(
+			'#ui-select-choices-row-25-0 > .ui-select-choices-row-inner',
+		).click()
+		cy.get('#centre-ro-id > .ui-select-match > .btn-default').type('75')
+		cy.contains('751000-01 - PARIS').click({ force: true })
+		cy.get('[name=dateDebutRegime]').type('01/01/2020')
+		cy.xpath('//*[@id="ay-form"]/footer/span[1]/input').click()
+	}
+	verificationAjoutAyantDroit() {
+		cy.contains('Ajout effectué avec succès')
+		cy.get('tbody').first().find('tr').should('have.length.gte', 2)
+	}
+	consulterAyantDroit() {
+		cy.get('#read-ayant-droit').click()
+		cy.get('.management-ayants-droits-header > [role="menu"]').should(
+			'exist',
+		)
+		cy.get('#nom').should('have.value', 'NEWNAME')
+		cy.get('#prenom').should('have.value', 'NEWPRENOM')
+		cy.get('.col-left > .input > .form-control').should(
+			'have.value',
+			'01/01/2020',
+		)
+	}
+	clickOngletAyantsDroitModifNouveau() {
+		cy.get('.button-icon-ay').click()
+		cy.wait(1000)
+		cy.get('#update-ayant-droit').click()
+	}
+	verificationPavageModif() {
+		cy.get('#nom').should('have.value', 'NEWNAME')
+		cy.get('#prenom').should('have.value', 'NEWPRENOM')
+		cy.get('#dateDebutRegime').should('have.value', '01/01/2020')
+	}
+	clickOngletAyantsResponsable() {
+		cy.get('tbody').first().find('tr').first().click()
+		cy.get('#update-ayant-droit').click()
+		cy.get('.well.ng-scope > .radiation-container').should('exist')
+	}
+	accesOngletProduits() {
+		cy.get('.nav-wizard > [ng-class="{active : activeTab == 3}"]').click()
+		cy.wait(1000)
+		cy.get('[index="0"] > .nav-link').click()
+		cy.xpath(
+			'//*[@id="option-produit-list"]/div[2]/div/div/div[1]/div/ul/li[9]',
+		).click()
+		cy.get(
+			'.table-responsive > .table > tbody > :nth-child(3) > :nth-child(1)',
+		).click()
+		cy.get('#option > .ui-select-match > .btn-default').click()
+		cy.get('.ui-select-choices-row-inner').click()
+		cy.get('footer > .btn-primary').click()
+	}
+	verificationAjoutAyantDroitOption() {
+		cy.contains('Ajout effectué avec succès')
+		cy.get('tbody').eq(1).find('tr').should('have.length.gte', 1)
+		cy.get('tbody').eq(1).find('tr').last().should('exist')
+	}
+	accesOngletInformationsGenerales() {
+		cy.get(
+			'[ng-class="{active : (!activeTab) ||  activeTab == 1}"]',
+		).click()
+		cy.get(
+			'div.ng-scope > .nav > [ng-class="{active : activeTab == 4}"] > .ng-binding',
+		).click()
+		cy.get('tbody').eq(1).find('tr').first().click()
+		cy.get('.demo-btns > .ng-scope > .btn').click()
+	}
+
+	autoScroll() {
+		cy.get('#informationsBox').should('exist')
+		cy.get(':nth-child(2) > .well > fieldset > .row > :nth-child(1) > .input > .form-control').should('have.value','01/01/2023')
+		cy.get('footer > .btn-primary').click()
+		cy.contains('Période RO créée')
+		cy.get('tbody').eq(2).find('tr').should('have.length.gte', 1)
+		cy.get('#listLiasonNoe > tbody > .odd > .expand').should('have.have',`Prévu pour envoi le : ${this.formattedDate}`);
+		cy.get('#listLiasonNoe > tbody > .odd > :nth-child(8)').should('have.have','Création')
+		cy.get('#listLiasonNoe > tbody > .odd > :nth-child(10)').contains('01/01/2023')
+	}
+	accesOngletInformationsGeneralesTP () {
+		cy.get(
+			'[ng-class="{active : (!activeTab) ||  activeTab == 1}"]',
+		).click()	
+	cy.xpath('//*[@id="fam-widgets"]/div/nav/nav/div/div/ul/li[7]').click()
+	cy.get('.open > .dropdown-menu > :nth-child(2) > .btn').click()
+	cy.get('#modalConfirm > .modal-dialog > .modal-content > .modal-body').contains('Voulez vous mettre à jour les droits TP ?')
+	cy.get('#modalYesBtn').click()
+	cy.contains('Mise à jour droits effectuée avec succès')
+	}
+	clickOngletMiseAJourCarte () {
+		cy.get(
+			'[ng-class="{active : (!activeTab) ||  activeTab == 1}"]',
+		).click()	
+	cy.xpath('//*[@id="fam-widgets"]/div/nav/nav/div/div/ul/li[7]').click()
+	cy.get('.open > .dropdown-menu > :nth-child(1) > .btn').click()
+	cy.xpath('//*[@id="modalConfirm"]/div/div/div[2]/div').contains('Voulez vous refaire la carte TP ?')
+	cy.get('#modalYesBtn').click()
+	cy.contains('Mise à jour carte effectuée avec succès')
+
 
 	}
 }
