@@ -63,10 +63,6 @@ Then("Je devrais voir les nouvelles références bancaires dans le pavé Liste d
 
 })
 
-
-
-
-
 When("Je clique de nouveau sur le bouton Ajouter" , () => {
     cotisation.cliquerBoutonAjouter()
 
@@ -119,6 +115,8 @@ When("J'accède au menu Informations générales Mémo" , () => {
  And("La note devrait être affichée dans ,le pavé Liste des mémos avec une date de création à la date du jour, la visio 360°" , () => {
     cotisation.verifAffichageNote360()
  })
+
+ 
 
 
  
