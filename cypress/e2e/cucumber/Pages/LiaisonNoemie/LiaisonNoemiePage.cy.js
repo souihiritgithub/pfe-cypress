@@ -497,6 +497,12 @@ ciquerValidernoteApreTPE(){
 
 }
 
+accederMémo(){
+    cy.wait(2000)
+    cy.get('[ng-class="{active : activeTab == 6}"] > .ng-binding').click()
+
+}
+
 
 
 verifAfficheNoteNoemieapresTPE(){
@@ -527,11 +533,6 @@ verifAffichageNote360apresTPE(){
 
 }
 
-accederMémo(){
-    cy.wait(2000)
-    cy.get('[ng-class="{active : activeTab == 6}"] > .ng-binding').click()
-
-}
 
 
 
