@@ -63,7 +63,13 @@ Then(
 		RenseignementGeneraux.VerifModifactionNouveauMessage()
 	},
 )
-
+When(
+	`L'utilisateur accède au menu Gestion Famille,Recherche, Sélectionne une ligne,Modifier,Affichage de la page Modification famille`,
+	() => {
+		RenseignementGeneraux.accesMenuGestionFamille()
+    RenseignementGeneraux.affichageModificationFamille()
+	},
+)
 When(
 	`L'utilisateur saisit une date dans le pavé Informations générales champs "PND depuis le" et Clique sur "Mettre à jour"`,
 	() => {
@@ -110,7 +116,7 @@ When(`L'utilisateur modifie le nom de famille, Clique sur le bouton Mettre à jo
 })
 When(`L'utilisateur teste chaque champ en effectuant des modifications,modification des champs et faire la vérification`, () => {
 	RenseignementGeneraux.testChamps()
-})
+}) 
 When(`L'utilisateur accède au menu Gestion Famille,Recherche la famille,Sélectionne la ligne,modifer etcAffichage de la page Modification famille`, () => {
 	RenseignementGeneraux.accesMenuGestionFamille()
     RenseignementGeneraux.affichageModificationFamille()
@@ -137,7 +143,7 @@ When(`L'utilisateur sélectionne la ligne du responsable,Clique sur Modifier,Vé
 When(`L'utilisateur accède à l'onglet Produits et options, ajout option pour le nouveau ayant droit`, () => {
 	RenseignementGeneraux.accesOngletProduits()
 })
-Then(`Vérification de l'affichage du message "Ajout effectué avec succès" et vérification des options`, () => {
+ Then(`Vérification de l'affichage du message "Ajout effectué avec succès" et vérification des options`, () => {
 	RenseignementGeneraux.verificationAjoutAyantDroitOption()
 })
 When(`L'utilisateur accède à l'onglet Informations générales L.NOEMIE,Sélectionne l'ayant droit créé dans la Liste des ayants droit,Clique sur le bouton "Création"`, () => {
@@ -151,4 +157,16 @@ When(`L'utilisateur accède à l'onglet Informations générales TP Externe,Cliq
 })
 When(`L'utilisateur clique sur "Mise à jour carte" dans le menu TP Externe,Affichage d'un message de confirmation et confirmer`, () => {
 	RenseignementGeneraux.clickOngletMiseAJourCarte()
+}) 
+When(`L'utilisateur clique sur "Historique Mouvements" dans le menu TP Externe,et verification`, () => {
+	RenseignementGeneraux.clickOngletHistoriqueMouvements()
+})
+When(`L'utilisateur clique sur le menu Courriers Edition, Sélectionne un courrier et Valider,Ouverture d'un nouvel onglet BDOC pour affichage du courrier sélectionné`, () => {
+	RenseignementGeneraux.clickOngletCourriersEdition()
+})
+When(`Accède au menu Mémo,Ajouter, Saisit une note et Valider`, () => {
+	RenseignementGeneraux.accesOngletMemo()
+})
+Then(`Affichage du message "Ajout effectué avec succès", Affichage de la note avec une date de création = à la date du jour dans le pavé Liste des mémos et Affichage du mémo dans la vision 360°`, () => {
+	RenseignementGeneraux.verificationAjoutMemo()
 })

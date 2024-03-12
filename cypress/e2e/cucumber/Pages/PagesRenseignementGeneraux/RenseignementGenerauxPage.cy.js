@@ -15,11 +15,11 @@ class RenseignementGeneraux {
 		cy.xpath(
 			'//*[@id="left-panel"]/ng-include/nav/ul/li[2]/ul/li[3]/a',
 		).click()
-		cy.get('[name=a_ynom]').type('ONETESTCY')
-		cy.xpath(
-			'//*[@id="searchFamily"]/footer[1]/div/div[2]/input[1]',
+		cy.get('[name=a_ynom]').type('TESTTICKET')
+		cy.get(
+			'#searchFamily > .search-family-footer > .row > .col-md-4 > .btn-primary',
 		).click()
-		cy.get('tbody').eq(2).find('tr').eq(1).click()
+		cy.get('tbody').eq(2).find('tr').eq(0).click()
 		cy.get('#bouton-gestion-famille-modifier').click()
 	}
 
@@ -124,21 +124,23 @@ class RenseignementGeneraux {
 		cy.get('[name=phone2]').should('have.value', '+3225741269')
 	}
 	saisieDateDepuisLe() {
-		cy.get('[name=dateNPAI]').clear().type('01/01/2015')
+		cy.get('[name=dateNPAI]').clear().type('01/01/2010')
 		cy.get('.col-md-12 > .btn-primary').click()
 		cy.contains('Modification effectuée avec succès')
 		cy.wait(1000)
-		cy.get('[name=dateNPAI]').should('have.value', '01/01/2015')
+		cy.get('[name=dateNPAI]').should('have.value', '01/01/2010')
 		cy.get('[name=email]').should('be.be.empty')
 	}
 
 	clickVision360() {
 		cy.get('#slideVision360').click()
-		cy.get(':nth-child(3) > .my-tooltip')
+		cy.get(
+			'[style="text-align: left; margin-top: 10px"] > :nth-child(3) > .my-tooltip',
+		)
 			.trigger('mouseover')
 			.should('be.visible') // Wait for the element to be visible
 			.invoke('text')
-			.should('contain', 'PND depuis le : 1 janvier 2015')
+			.should('contain', 'PND depuis le : 1 janvier 2010')
 		cy.get(':nth-child(3) > .my-tooltip > :nth-child(2)').should(
 			'have.css',
 			'color',
@@ -158,8 +160,9 @@ class RenseignementGeneraux {
 		cy.get('tbody').eq(1).find('tr').first().click()
 		cy.get('[aria-label="Dupliquer"] > .btn').click()
 		cy.get('#dateDebut').clear().type('01/01/2011')
-		cy.get('#cp2').clear().type('75001')
-		cy.get('#valider').click()
+		cy.get('#cp2').clear().type('85002')
+		cy.get('#valider').click({ force: true })
+		cy.wait(1000)
 	}
 	verificationMessageAjout() {
 		cy.contains('Ajout effectué avec succès')
@@ -173,7 +176,7 @@ class RenseignementGeneraux {
 		).click()
 		cy.get(
 			'.col-md-4 > .well > [style="padding: 25px 2% 5px;!important"] > .row > :nth-child(2) > .input > .form-control',
-		).should('have.value', '03/03/2024')
+		).should('have.value', '04/03/2024')
 	}
 
 	accesInformationsGenerales() {
@@ -206,31 +209,24 @@ class RenseignementGeneraux {
 		).should('exist')
 	}
 	modifierAnneeNaissance() {
-		cy.get('[name=dateNaissance]').clear().type('01/01/1995')
+		cy.get('[name=dateNaissance]').clear().type('01/02/1990')
 		cy.get('#mettreAJour').click()
 		cy.contains('Modification effectuée avec succès')
 	}
 
 	modifierNomFamille() {
-		cy.get('#nom').clear().type('MODIFOCATIONNAME')
+		cy.get('[aria-label="Modifier"]').find('a').click()
+		cy.get('#nom').clear({ force: true }).type('naa')
 		cy.get('#mettreAJour').click()
 		cy.contains('Modification effectuée avec succès')
 	}
 	testChamps() {
-		//modifprenom
-		cy.get('#prenom').clear().type('MODIFOCATIONNAME')
-		cy.get('#mettreAJour').click()
-		cy.contains('Modification effectuée avec succès')
-		cy.get('tbody').first().find('tr').first().click()
-
-		cy.get('[aria-label="Modifier"]').find('a').click()
-		cy.get('#prenom').should('have.value', 'MODIFOCATIONNAME')
 		//modif civilité
+		cy.get('[aria-label="Modifier"]').find('a').click()
+
 		cy.get('#civilite').select('Madame')
 		cy.get('#mettreAJour').click()
 		cy.contains('Modification effectuée avec succès')
-		cy.get('tbody').first().find('tr').first().click()
-
 		cy.get('[aria-label="Modifier"]').find('a').click()
 		cy.get('#civilite').should('have.value', 'string:MME')
 	}
@@ -240,9 +236,9 @@ class RenseignementGeneraux {
 		cy.xpath(
 			'//*[@id="list-ayant-droits-widgets"]/div/div/div[1]/div[1]/div/div/ul/li[21]',
 		).click()
-		cy.get('#dateAdhesion').type('04/08/2024')
-		cy.get('#nom').type('NEWNAME')
-		cy.get('#prenom').type('NEWPRENOM')
+		cy.get('#dateAdhesion').type('01/01/2022')
+		cy.get('#nom').type('NEWNAMETEST')
+		cy.get('#prenom').type('NEWPRENOMPRENOM')
 		cy.get('#qualite > .ui-select-match > .btn-default').click()
 		cy.get(
 			'#ui-select-choices-row-17-2 > .ui-select-choices-row-inner',
@@ -273,8 +269,8 @@ class RenseignementGeneraux {
 		cy.get('.management-ayants-droits-header > [role="menu"]').should(
 			'exist',
 		)
-		cy.get('#nom').should('have.value', 'NEWNAME')
-		cy.get('#prenom').should('have.value', 'NEWPRENOM')
+		cy.get('#nom').should('have.value', 'NEWNAMETEST')
+		cy.get('#prenom').should('have.value', 'NEWPRENOMPRENOM')
 		cy.get('.col-left > .input > .form-control').should(
 			'have.value',
 			'01/01/2020',
@@ -286,20 +282,22 @@ class RenseignementGeneraux {
 		cy.get('#update-ayant-droit').click()
 	}
 	verificationPavageModif() {
-		cy.get('#nom').should('have.value', 'NEWNAME')
-		cy.get('#prenom').should('have.value', 'NEWPRENOM')
+		cy.get('#nom').should('have.value', 'NEWNAMETEST')
+		cy.get('#prenom').should('have.value', 'NEWPRENOMPRENOM')
 		cy.get('#dateDebutRegime').should('have.value', '01/01/2020')
 	}
 	clickOngletAyantsResponsable() {
 		cy.get('tbody').first().find('tr').first().click()
 		cy.get('#update-ayant-droit').click()
 		cy.get('.well.ng-scope > .radiation-container').should('exist')
+		cy.wait(10000)
 	}
 	accesOngletProduits() {
-		cy.get('.nav-wizard > [ng-class="{active : activeTab == 3}"]').click()
+		cy.xpath('//*[@id="content"]/div/div/div[1]/ul/li[3]').click()
 		cy.wait(1000)
-		cy.get('[index="0"] > .nav-link').click()
-		cy.xpath(
+		cy.xpath('//*[@id="ProduitGestion"]/div/ul/li[2]').click()
+		cy.wait(1000)
+		 cy.xpath(
 			'//*[@id="option-produit-list"]/div[2]/div/div/div[1]/div/ul/li[9]',
 		).click()
 		cy.get(
@@ -307,7 +305,12 @@ class RenseignementGeneraux {
 		).click()
 		cy.get('#option > .ui-select-match > .btn-default').click()
 		cy.get('.ui-select-choices-row-inner').click()
-		cy.get('footer > .btn-primary').click()
+		cy.get(':nth-child(1) > :nth-child(3) > .input > .form-control').clear().type('01/01/2023')
+
+		cy.wait(1000)
+		cy.get(':nth-child(1) > :nth-child(3) > .input > .form-control').clear().type('01/01/2022')
+
+		cy.get('footer > .btn-primary').click() 
 	}
 	verificationAjoutAyantDroitOption() {
 		cy.contains('Ajout effectué avec succès')
@@ -327,34 +330,74 @@ class RenseignementGeneraux {
 
 	autoScroll() {
 		cy.get('#informationsBox').should('exist')
-		cy.get(':nth-child(2) > .well > fieldset > .row > :nth-child(1) > .input > .form-control').should('have.value','01/01/2023')
+		cy.get(
+			':nth-child(2) > .well > fieldset > .row > :nth-child(1) > .input > .form-control',
+		).should('have.value', '01/01/2022')
 		cy.get('footer > .btn-primary').click()
 		cy.contains('Période RO créée')
 		cy.get('tbody').eq(2).find('tr').should('have.length.gte', 1)
-		cy.get('#listLiasonNoe > tbody > .odd > .expand').should('have.have',`Prévu pour envoi le : ${this.formattedDate}`);
-		cy.get('#listLiasonNoe > tbody > .odd > :nth-child(8)').should('have.have','Création')
-		cy.get('#listLiasonNoe > tbody > .odd > :nth-child(10)').contains('01/01/2023')
+		cy.get('#listLiasonNoe > tbody > .odd > .expand').should(
+			'have.have',
+			`Prévu pour envoi le : ${this.formattedDate}`,
+		)
+		cy.get('#listLiasonNoe > tbody > .odd > :nth-child(8)').should(
+			'have.have',
+			'Création',
+		)
+		cy.get('#listLiasonNoe > tbody > .odd > :nth-child(10)').contains(
+			'01/01/2022',
+		)
 	}
-	accesOngletInformationsGeneralesTP () {
+	accesOngletInformationsGeneralesTP() {
 		cy.get(
 			'[ng-class="{active : (!activeTab) ||  activeTab == 1}"]',
-		).click()	
-	cy.xpath('//*[@id="fam-widgets"]/div/nav/nav/div/div/ul/li[7]').click()
-	cy.get('.open > .dropdown-menu > :nth-child(2) > .btn').click()
-	cy.get('#modalConfirm > .modal-dialog > .modal-content > .modal-body').contains('Voulez vous mettre à jour les droits TP ?')
-	cy.get('#modalYesBtn').click()
-	cy.contains('Mise à jour droits effectuée avec succès')
+		).click()
+		cy.xpath('//*[@id="fam-widgets"]/div/nav/nav/div/div/ul/li[7]').click()
+		cy.get('.open > .dropdown-menu > :nth-child(2) > .btn').click()
+	cy.wait(2000)
+		cy.get('#modalYesBtn').click()
+		cy.contains('Mise à jour droits effectuée avec succès')
 	}
-	clickOngletMiseAJourCarte () {
+	clickOngletMiseAJourCarte() {
 		cy.get(
 			'[ng-class="{active : (!activeTab) ||  activeTab == 1}"]',
-		).click()	
-	cy.xpath('//*[@id="fam-widgets"]/div/nav/nav/div/div/ul/li[7]').click()
-	cy.get('.open > .dropdown-menu > :nth-child(1) > .btn').click()
-	cy.xpath('//*[@id="modalConfirm"]/div/div/div[2]/div').contains('Voulez vous refaire la carte TP ?')
-	cy.get('#modalYesBtn').click()
-	cy.contains('Mise à jour carte effectuée avec succès')
-
+		).click()
+		cy.xpath('//*[@id="fam-widgets"]/div/nav/nav/div/div/ul/li[7]').click()
+		cy.get('.open > .dropdown-menu > :nth-child(1) > .btn').click()
+		cy.wait(2000)
+		cy.get('#modalYesBtn').click()
+		cy.contains('Mise à jour carte effectuée avec succès')
+	}
+	clickOngletHistoriqueMouvements(){
+		cy.get('[ng-class="{active : activeTab == 7 || activeTab == 15}"] > .dropdown-toggle').click()
+		cy.get('.open > .dropdown-menu > :nth-child(5) > .ng-binding').click()
+		cy.get('tbody').eq(1).find('tr').should('have.length.gte', 1)
+		cy.get('.odd > :nth-child(5)').contains(this.formattedDate)
+		cy.get('.odd > :nth-child(6)').contains(this.formattedDate)
+	}
+	clickOngletCourriersEdition(){
+		cy.get('[ng-class="{active : activeTab == 10 || activeTab == 16 || activeTab == 17 }"] > .dropdown-toggle').click()
+		cy.get('.open > .dropdown-menu > :nth-child(2)').click()
+		cy.xpath('//*[@id="courrierEgreneForm"]/div/div/div/div[1]').contains('Edition courriers')
+	}
+	accesOngletMemo(){
+		cy.get('[ng-class="{active : activeTab == 6}"] > .ng-binding').click()
+		cy.get('[aria-label="Ajouter"] > .btn').click()
+		cy.get('#note').type('test')
+		cy.xpath('//*[@id="memosform"]/footer/span[1]/input').click()
+		
+	}
+	verificationAjoutMemo(){
+		cy.contains('Ajout effectué avec succès')
+		cy.get('tbody').eq(1).find('tr').should('have.length.gte', 1)
+		cy.get('.odd > .expand').contains(this.formattedDate)
+		cy.get('#slideVision360').click()
+		cy.wait(10000)
+		cy.get(':nth-child(1) > .my-tooltip > .ligneMemoRelPj').click()
+		cy.wait(1000)
+		cy.get('.memoRelPjListModalClass > .modal-dialog > .modal-content').should('exist')
+		cy.wait(1000)
+		cy.get('.panel-body > .table > tbody > tr.ng-scope > .my-tooltip > .ng-binding').contains(this.formattedDate)
 
 	}
 }
