@@ -12,8 +12,7 @@ module.exports = defineConfig({
     json: false,
   },
   defaultCommandTimeout: 5000,
-  viewportWidth: 1000,
-  viewportHeight: 600,
+ 
   component: {
     viewportWidth: 500,
     viewportHeight: 500,
