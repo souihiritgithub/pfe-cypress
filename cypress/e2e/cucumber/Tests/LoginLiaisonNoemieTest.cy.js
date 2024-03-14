@@ -1,22 +1,24 @@
 /// <reference types="cypress" />
 import { Given, When, Then, And } from 'cypress-cucumber-preprocessor/steps'
-import login from '../Pages/LoginPage.cy'
+import login from '../Pages/LoginLiaisonNoemiePage.cy'
 import loginRct02 from '../../../support/commands'
 import logout from '../../../support/commands'
- 
+
+
+
+
 /*before(() => {
-    cy.loginRct02()
+	cy.loginRct02()
 })*/
- 
+
 Then('Validate the title after login', () => {
-    login.verifyPageTitle()
+	login.verifyPageTitle()
 })
- 
+
 And('Validate existing elements in the redirected page', () => {
-    login.verifyLoggedUserAndMenuSidebar()
+	login.verifyLoggedUserAndMenuSidebar()
 })
 /*afterEach(() => {
-    cy.logout()
+	cy.logout()
     cy.clearAllLocalStorage()
 })*/
- 

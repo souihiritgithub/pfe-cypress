@@ -1,5 +1,5 @@
 import 'cypress-xpath';
-class LoginPage {
+class LoginLiaisonNoemiPage {
     
     verifyPageTitle() {
      return cy.title().should("eq", "Owlink by Tessi");
@@ -12,5 +12,5 @@ class LoginPage {
     //cy.xpath('//*[@id="wid-id-0"]/header/h2').should('be.visible').contains('Rapport de travail');
    }
  }
- const login = new LoginPage();
+ const login = new LoginLiaisonNoemiPage();
  export default login;
